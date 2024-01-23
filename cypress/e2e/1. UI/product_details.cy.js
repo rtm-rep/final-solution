@@ -20,9 +20,11 @@ describe('Product Details Page spec', () => {
     cy.get('[data-test="add-to-favorites"]').should('be.visible').and('contain', 'Add to favourites')
   })
 
-  it('Verify cart icon after adding product to cart', () => {
-    cy.get('[data-test="add-to-favorites"]').should('be.visible').and('contain', 'Add to favourites').click()
-    
-    cy.get('[class="toast bg-danger text-light fade show"]').should('be.visible')
+  it.only('Verify cart icon after adding product to cart', () => {
+    cy.get('[data-test="add-to-cart"]').click()
+
+    cy.get('[class="toast bg-success text-light fade show"]').should('be.visible')
+
+    cy.get('[data-test="nav-cart"]').should('exist').and('be.visible')
   })
 })
