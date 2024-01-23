@@ -1,23 +1,33 @@
-describe('Sign In page spec', () => {
+import CommonElements from "../../support/page_object/CommonElements"
+import RegistrationPage from "../../support/page_object/RegistrationPage";
 
+describe('Sign In page spec', () => {
+  const commonElements = new CommonElements();
+  const registrationPage = new RegistrationPage();
   beforeEach(() => {
     cy.visit('https://practicesoftwaretesting.com/')
 
-    cy.get('[data-test="nav-sign-in"]').click()
+    commonElements.navSignIn
+      .click()
   })
   it('Verify sign in page. Fields validation', () => {
-    cy.get('[data-test="email"]').should('be.visible')
-
-    cy.get('[data-test="password"]').should('be.visible')
-
-    cy.get('[data-test="login-submit"]').should('be.visible')
+    registrationPage.loginEmail
+      .should('be.visible')
+    registrationPage.loginPassword
+      .should('be.visible')
+    registrationPage.loginBtn
+      .should('be.visible')
   })
 
   it('Verify sign in page (negative case). After clicking send with empty fields, errors appeared', () => {
-    cy.get('[data-test="login-submit"]').should('be.visible').click()
-
-    cy.get('[data-test="email-error"]').should('be.visible').and('contain', 'E-mail is required.')
-
-    cy.get('[data-test="password-error"]').should('be.visible').and('contain', 'Password is required.')
+    registrationPage.loginBtn
+      .should('be.visible')
+      .click()
+    registrationPage.loginEmailError
+      .should('be.visible')
+      .and('contain', 'E-mail is required.')
+    registrationPage.loginPasswordError
+      .should('be.visible')
+      .and('contain', 'Password is required.')
   })
 })

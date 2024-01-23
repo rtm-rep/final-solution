@@ -1,30 +1,46 @@
+import CommonElements from "../../support/page_object/CommonElements"
+import ProductDetailsPage from "../../support/page_object/ProductDetailsPage";
+
 describe('Product Details Page spec', () => {
+  const commonElements = new CommonElements();
+  const productDetailsPage = new ProductDetailsPage();
   beforeEach(() => {
     cy.visit('https://practicesoftwaretesting.com/')
 
-    cy.get('[id="filters"]').contains('Hand Saw').click()
-
-    cy.get('[data-test="filter_completed"]').contains('Wood Saw').click()
-
-    cy.get('[data-test="product-name"]').should('be.visible').and('contain', 'Wood Saw')
+    commonElements.filters
+      .contains('Hand Saw')
+      .click()
+    commonElements.filteredProductContainer
+      .contains('Wood Saw')
+      .click()
+    productDetailsPage.productName
+      .should('be.visible')
+      .and('contain', 'Wood Saw')
   })
   it('Verify product details page has corresponding information', () => {
-    cy.get('[data-test="unit-price"]').should('be.visible').and('contain', '12.18')
-
-    cy.get('[data-test="product-description"]').should('be.visible').and('contain', 'Quisque quis fermentum ligula')
-
-    cy.get('[class="input-group quantity"]').should('be.visible')
-    
-    cy.get('[data-test="add-to-cart"]').should('be.visible').and('contain', 'Add to cart')
-
-    cy.get('[data-test="add-to-favorites"]').should('be.visible').and('contain', 'Add to favourites')
+    productDetailsPage.productPrice
+      .should('be.visible')
+      .and('contain', '12.18')
+    productDetailsPage.productDescription
+      .should('be.visible')
+      .and('contain', 'Quisque quis fermentum ligula')
+    productDetailsPage.productQtyModule
+      .should('be.visible')
+    productDetailsPage.addToCart
+      .should('be.visible')
+      .and('contain', 'Add to cart')
+    productDetailsPage.addToFav
+      .should('be.visible')
+      .and('contain', 'Add to favourites')
   })
 
-  it.only('Verify cart icon after adding product to cart', () => {
-    cy.get('[data-test="add-to-cart"]').click()
-
-    cy.get('[class="toast bg-success text-light fade show"]').should('be.visible')
-
-    cy.get('[data-test="nav-cart"]').should('exist').and('be.visible')
+  it('Verify cart icon after adding product to cart', () => {
+    productDetailsPage.addToCart
+      .click()
+    productDetailsPage.successToast
+      .should('be.visible')
+    commonElements.navCart
+      .should('exist')
+      .and('be.visible')
   })
 })
